@@ -15,7 +15,7 @@
         <aws.java.sdk.version>2.15.7</aws.java.sdk.version>
     </properties>
 
-    <!-- Taken from https://aws.amazon.com/blogs/developer/tuning-the-aws-java-sdk-2-x-to-reduce-startup-time/ -->
+    <!-- V2 DynamoDB, taken from https://aws.amazon.com/blogs/developer/tuning-the-aws-java-sdk-2-x-to-reduce-startup-time/ -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -31,7 +31,7 @@
     <dependencies>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
+            <artifactId>dynamodb-enhanced</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>software.amazon.awssdk</groupId>
@@ -47,6 +47,14 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>url-connection-client</artifactId>
         </dependency>
+
+        <!-- AWS Lambda core sdk -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>
