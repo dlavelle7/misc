@@ -31,31 +31,29 @@ public class V2Handler implements RequestHandler<Object, Object> {
     @Override
     public Object handleRequest(Object o, Context context) {
         try {
-            LOGGER.info("V2 Lambda invoked");
-
+            // PUT item
             SongItem songToPut = new SongItem();
             songToPut.setArtist("Lavelle");
             songToPut.setTitle("Howling Wind");
+
             LOGGER.info(String.format("Putting Song Item: %s, %s", songToPut.getArtist(), songToPut.getTitle()));
             MUSIC_TABLE.putItem(songToPut);
 
-            // Create a KEY object
-            Key key = Key.builder()
-                    .partitionValue("Paranoid")
-                    .sortValue("Black Sabbath")
-                    .build();
+            // GET item
+            SongItem songToGet = new SongItem();
+            songToGet.setArtist("Black Sabbath");
+            songToGet.setTitle("Paranoid");
 
-            // Get item from dynamodb
             LOGGER.info("Get Song Item");
-            SongItem item = MUSIC_TABLE.getItem(r->r.key(key));
+            SongItem songRetrieved = MUSIC_TABLE.getItem(songToGet);
 
-            LOGGER.log(Level.INFO, String.format("Retrieved item from DynamoDb: Artist = %s, Song = %s", item.getArtist(), item.getTitle()));
+            LOGGER.log(Level.INFO, String.format("Retrieved item from DynamoDb: Artist = %s, Song = %s",
+                    songRetrieved.getArtist(), songRetrieved.getTitle()));
         }
         catch (Exception e) {
             LOGGER.log(Level.WARNING , "Lambda execution error", e);
         }
 
         return "OK";
-
     }
 }
