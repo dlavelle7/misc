@@ -3,7 +3,6 @@ package org.lavelle.dev;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.util.logging.Level;
@@ -31,6 +30,8 @@ public class V2Handler implements RequestHandler<Object, Object> {
     @Override
     public Object handleRequest(Object o, Context context) {
         try {
+            LOGGER.info("V2 Lambda handler invoked");
+
             // PUT item
             SongItem songToPut = new SongItem();
             songToPut.setArtist("Lavelle");
