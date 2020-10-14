@@ -4,6 +4,7 @@ import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsPro
 import software.amazon.awssdk.core.SdkSystemSetting;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
@@ -11,26 +12,27 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @DynamoDbBean
-public class MusicItem {
-    private String Artist;
-    private String songTitle;
+public class SongItem {
+    private String artist;
+    private String title;
 
-    @DynamoDbPartitionKey
-    public String getArtist() {
-        return Artist;
-    }
-
-    public void setArtist(String artist) {
-        Artist = artist;
+    public SongItem() {
     }
 
     @DynamoDbSortKey
-    public String getSongTitle() {
-        return songTitle;
+    public String getArtist() {
+        return this.artist;
+    }
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public void setSongTitle(String songTitle) {
-        this.songTitle = songTitle;
+    @DynamoDbPartitionKey
+    public String getTitle() {
+        return this.title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
@@ -40,6 +42,7 @@ public class MusicItem {
      * Resources that are created during initialization stay in memory between invocations,
      * and can be reused by the handler thousands of times.
      */
+    @DynamoDbIgnore
     private static final DynamoDbClient dynamoDbClient() {
         return DynamoDbClient.builder()
                 .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
@@ -48,6 +51,7 @@ public class MusicItem {
                 .build();
     }
 
+    @DynamoDbIgnore
     public static final DynamoDbEnhancedClient dynamoDbEnhancedClient() {
         return DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDbClient())
