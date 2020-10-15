@@ -12,6 +12,13 @@
     <artifactId>v1</artifactId>
 
     <dependencies>
+        <!-- V1 DynamoDB (DynamoDBMapper) -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>1.11.880</version>
+        </dependency>
+
         <!-- AWS Lambda core sdk -->
         <dependency>
             <groupId>com.amazonaws</groupId>

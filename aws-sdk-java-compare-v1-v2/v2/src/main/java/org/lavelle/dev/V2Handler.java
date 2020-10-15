@@ -20,11 +20,11 @@ public class V2Handler implements RequestHandler<Object, Object> {
 
     private static final Logger LOGGER = Logger.getLogger("handler");
 
-    private DynamoDbTable<SongItem> MUSIC_TABLE;
+    private DynamoDbTable<SongItemV2> MUSIC_TABLE;
 
     public V2Handler() {
         LOGGER.info("V2 Lambda handler initializing");
-        MUSIC_TABLE = SongItem.dynamoDbEnhancedClient().table("Songs", TableSchema.fromBean(SongItem.class));
+        MUSIC_TABLE = SongItemV2.dynamoDbEnhancedClient().table("Songs", TableSchema.fromBean(SongItemV2.class));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class V2Handler implements RequestHandler<Object, Object> {
             LOGGER.info("V2 Lambda handler invoked");
 
             // PUT item
-            SongItem songToPut = new SongItem();
+            SongItemV2 songToPut = new SongItemV2();
             songToPut.setArtist("Lavelle");
             songToPut.setTitle("Howling Wind");
 
@@ -41,12 +41,12 @@ public class V2Handler implements RequestHandler<Object, Object> {
             MUSIC_TABLE.putItem(songToPut);
 
             // GET item
-            SongItem songToGet = new SongItem();
+            SongItemV2 songToGet = new SongItemV2();
             songToGet.setArtist("Black Sabbath");
             songToGet.setTitle("Paranoid");
 
             LOGGER.info("Get Song Item");
-            SongItem songRetrieved = MUSIC_TABLE.getItem(songToGet);
+            SongItemV2 songRetrieved = MUSIC_TABLE.getItem(songToGet);
 
             LOGGER.log(Level.INFO, String.format("Retrieved item from DynamoDb: Artist = %s, Song = %s",
                     songRetrieved.getArtist(), songRetrieved.getTitle()));

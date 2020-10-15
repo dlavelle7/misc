@@ -12,11 +12,11 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @DynamoDbBean
-public class SongItem {
+public class SongItemV2 {
     private String artist;
     private String title;
 
-    public SongItem() {
+    public SongItemV2() {
     }
 
     @DynamoDbSortKey
