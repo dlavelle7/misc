@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  * we recommend initializing the SDK client outside of the handler method so that subsequent executions processed by
  * the same instance can reuse the client and connections.
  */
-public class V2Handler implements RequestHandler<Object, Object> {
+public class V2Handler implements RequestHandler<Map<String, String>, String> {
 
     private static final Logger LOGGER = Logger.getLogger("handler");
 
@@ -28,33 +29,49 @@ public class V2Handler implements RequestHandler<Object, Object> {
     }
 
     @Override
-    public Object handleRequest(Object o, Context context) {
+    public String handleRequest(Map<String, String> input, Context context) {
         try {
             LOGGER.info("V2 Lambda handler invoked");
+            String operation = input.get("operation");
 
-            // PUT item
-            SongItemV2 songToPut = new SongItemV2();
-            songToPut.setArtist("Lavelle");
-            songToPut.setTitle("Howling Wind");
-
-            LOGGER.info(String.format("Putting Song Item: %s, %s", songToPut.getArtist(), songToPut.getTitle()));
-            MUSIC_TABLE.putItem(songToPut);
-
-            // GET item
-            SongItemV2 songToGet = new SongItemV2();
-            songToGet.setArtist("Black Sabbath");
-            songToGet.setTitle("Paranoid");
-
-            LOGGER.info("Get Song Item");
-            SongItemV2 songRetrieved = MUSIC_TABLE.getItem(songToGet);
-
-            LOGGER.log(Level.INFO, String.format("Retrieved item from DynamoDb: Artist = %s, Song = %s",
-                    songRetrieved.getArtist(), songRetrieved.getTitle()));
+            if (operation.equals("init")) {
+                // no op
+            }
+            else if (operation.equals("get")){
+                getItem();
+            }
+            else if (operation.equals("put")) {
+                putItem();
+            }
         }
         catch (Exception e) {
             LOGGER.log(Level.WARNING , "Lambda execution error", e);
+            return "INTERNAL_SERVER_ERROR";
         }
 
         return "OK";
+    }
+
+    private void getItem() {
+        // GET item
+        SongItemV2 songToGet = new SongItemV2();
+        songToGet.setArtist("Black Sabbath");
+        songToGet.setTitle("Paranoid");
+
+        LOGGER.info("Get Song Item");
+        SongItemV2 songRetrieved = MUSIC_TABLE.getItem(songToGet);
+
+        LOGGER.log(Level.INFO, String.format("Retrieved item from DynamoDb: Artist = %s, Song = %s",
+                songRetrieved.getArtist(), songRetrieved.getTitle()));
+    }
+
+    private void putItem() {
+        // PUT item
+        SongItemV2 songToPut = new SongItemV2();
+        songToPut.setArtist("Lavelle");
+        songToPut.setTitle("Howling Wind");
+
+        MUSIC_TABLE.putItem(songToPut);
+        LOGGER.info(String.format("Put Song Item: %s, %s", songToPut.getArtist(), songToPut.getTitle()));
     }
 }
