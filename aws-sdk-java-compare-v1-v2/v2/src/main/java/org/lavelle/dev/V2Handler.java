@@ -10,13 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
- * After a Lambda function finishes, Lambda may reuse the previous container for subsequent invocations.
- * In such case, objects declared outside of the function handler method remain initialized.
- * To take the advantage of the Lambda execution context reuse,
- * we recommend initializing the SDK client outside of the handler method so that subsequent executions processed by
- * the same instance can reuse the client and connections.
- */
 public class V2Handler implements RequestHandler<Map<String, String>, String> {
 
     private static final Logger LOGGER = Logger.getLogger("handler");

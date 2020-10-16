@@ -37,10 +37,13 @@ public class SongItemV2 {
 
 
     /**
-     * You can add initialization code outside of your handler method to reuse resources across multiple invocations.
-     * When the runtime loads your handler, it runs static code and the class constructor.
-     * Resources that are created during initialization stay in memory between invocations,
-     * and can be reused by the handler thousands of times.
+     * Tuning V2 to reduce startup time: https://aws.amazon.com/blogs/developer/tuning-the-aws-java-sdk-2-x-to-reduce-startup-time/
+     *
+     * 1. Instantiate the DB client in the handler constructor, so it can be reused across multiple lambda invocations.
+     * 2. Use the lightweight UrlConnectionHttpClient - lower instantiation time (& throughput) compared to ApacheHttpClient.
+     * 3. Exclude unused HTTP Client dependencies (Apache & Netty clients - see pom.xml) to minimise deployment package size.
+     * 3. Load credentials from the Lambda environment with EnvironmentVariableCredentialsProvider (avoids cred lookups).
+     * 4. Set the Region using the Lambda environment variable AWS_REGION (avoids region lookups).
      */
     @DynamoDbIgnore
     private static final DynamoDbClient dynamoDbClient() {
