@@ -42,8 +42,8 @@ public class SongItemV2 {
      * 1. Instantiate the DB client in the handler constructor, so it can be reused across multiple lambda invocations.
      * 2. Use the lightweight UrlConnectionHttpClient - lower instantiation time (& throughput) compared to ApacheHttpClient.
      * 3. Exclude unused HTTP Client dependencies (Apache & Netty clients - see pom.xml) to minimise deployment package size.
-     * 3. Load credentials from the Lambda environment with EnvironmentVariableCredentialsProvider (avoids cred lookups).
-     * 4. Set the Region using the Lambda environment variable AWS_REGION (avoids region lookups).
+     * 4. Load credentials from the Lambda environment with EnvironmentVariableCredentialsProvider (avoids cred lookups).
+     * 5. Set the Region using the Lambda environment variable AWS_REGION (avoids region lookups).
      */
     @DynamoDbIgnore
     private static final DynamoDbClient dynamoDbClient() {
