@@ -7,7 +7,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
-import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
+import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
@@ -50,7 +50,7 @@ public class SongItemV2 {
         return DynamoDbClient.builder()
                 .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
                 .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
-                .httpClientBuilder(UrlConnectionHttpClient.builder())
+                .httpClientBuilder(ApacheHttpClient.builder())
                 .build();
     }
 
